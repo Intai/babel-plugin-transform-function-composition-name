@@ -16,6 +16,14 @@ describe('Babel Plugin', () => {
     ]
   }
 
+  const calleeOptions = {
+    plugins: [
+      [plugin, {
+        callee: /^R$/
+      }]
+    ]
+  }
+
   it('should wrap function composition with a named function', () => {
     const code = `
       const incZero = R.pipe(
@@ -25,11 +33,28 @@ describe('Babel Plugin', () => {
     `
 
     const incZero = (new Function('R', `
-      ${babel.transform(code, options).code}
+      ${babel.transform(code, calleeOptions).code}
       return incZero
     `))(R);
 
     chai.expect(incZero.name).to.equal('incZero')
+    chai.expect(incZero()).to.equal(1)
+  })
+
+  it('should not wrap function for callee configured not to', () => {
+    const code = `
+      const incZero = ramda.pipe(
+        ramda.always(0),
+        ramda.inc
+      )
+    `
+
+    const incZero = (new Function('ramda', `
+      ${babel.transform(code, calleeOptions).code}
+      return incZero
+    `))(R);
+
+    chai.expect(incZero.name).to.equal('')
     chai.expect(incZero()).to.equal(1)
   })
 
@@ -43,7 +68,7 @@ describe('Babel Plugin', () => {
     `
 
     const valOne = (new Function('R', `
-      ${babel.transform(code, options).code}
+      ${babel.transform(code, calleeOptions).code}
       return valOne
     `))(R);
 
@@ -140,7 +165,7 @@ describe('Babel Plugin', () => {
     chai.expect(getSeven()).to.equal('seven')
   })
 
-  it('should not wrap function for variable configured not to be', () => {
+  it('should not wrap function for variable configured not to', () => {
     const code = `
       const constructSeven = (function () {
         return function () {
