@@ -9,7 +9,10 @@ describe('Babel Plugin', () => {
 
   const options = {
     plugins: [
-      plugin
+      [plugin, {
+        variable: /^(?!(construct))/i,
+        callee: /^R$/
+      }]
     ]
   }
 
@@ -135,6 +138,43 @@ describe('Babel Plugin', () => {
 
     chai.expect(getSeven.name).to.equal('getSeven')
     chai.expect(getSeven()).to.equal('seven')
+  })
+
+  it('should not wrap function for variable configured not to be', () => {
+    const code = `
+      const constructSeven = (function () {
+        return function () {
+          this.val = 'seven'
+        }
+      })()
+    `
+
+    const constructSeven = (new Function(`
+      ${babel.transform(code, options).code}
+      return constructSeven
+    `))();
+
+    chai.expect(constructSeven.name).to.equal('')
+    chai.expect((new constructSeven()).val).to.equal('seven')
+  })
+
+  it('should not wrap function around for statement', () => {
+    const code = `
+      const valArray = (function () {
+        const array = R.identity([])
+        for (let i = R.identity(1); i < 6; ++i) {
+          array.push(i)
+        }
+        return array
+      })()
+    `
+
+    const valArray = (new Function('R', `
+      ${babel.transform(code, options).code}
+      return valArray
+    `))(R);
+
+    chai.expect(valArray).to.eql([1, 2, 3, 4, 5])
   })
 
 })
