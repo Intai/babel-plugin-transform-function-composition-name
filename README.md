@@ -16,18 +16,24 @@ $ npm install babel-plugin-transform-function-composition-name
 **.babelrc**
 ```json
 {
-  "plugins": ["transform-function-composition-name"]
+  "plugins": [
+    ["transform-function-composition-name", {
+      "callee": "^R$",
+      "variable": "^(?!(construct))"
+    }]
+  ]
 }
-```
-
-### Via CLI
-```sh
-$ babel --plugins transform-function-composition-name script.js
 ```
 
 ### Via Node API
 ```javascript
 require("babel-core").transform("code", {
-  plugins: ["transform-function-composition-name"]
+  plugins: [
+    ["transform-function-composition-name", {
+      // configure function composition to be transformed.
+      "callee": /^R$/, // optional function callee
+      "variable": /^(?!(construct))/ // optional variable name
+    }]
+  ]
 });
 ```

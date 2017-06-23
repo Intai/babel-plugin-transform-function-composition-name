@@ -1,6 +1,12 @@
 
 export default function({ types: t }) {
 
+  function getRegex(regex) {
+    return (typeof regex === 'string')
+      ? new RegExp(regex)
+      : regex
+  }
+
   function isCallExpression(node) {
     return node && node.type === 'CallExpression'
       && node.callee.name !== 'require'
@@ -17,13 +23,13 @@ export default function({ types: t }) {
 
   function isCompositeVariable(node, state) {
     return !!state.opts.variable
-      && state.opts.variable.test(node.name)
+      && getRegex(state.opts.variable).test(node.name)
   }
 
   function isCompositeCallee(node, state) {
     return !!state.opts.callee
       && node.callee.type === 'MemberExpression'
-      && state.opts.callee.test(node.callee.object.name)
+      && getRegex(state.opts.callee).test(node.callee.object.name)
   }
 
   function isComposite(path, state) {

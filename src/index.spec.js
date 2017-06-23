@@ -19,7 +19,7 @@ describe('Babel Plugin', () => {
   const calleeOptions = {
     plugins: [
       [plugin, {
-        callee: /^R$/
+        callee: '^R$'
       }]
     ]
   }
