@@ -6,6 +6,37 @@ A [Babel](https://github.com/babel/babel/) transform plugin to name composition 
 [![Coverage Status](https://coveralls.io/repos/github/Intai/babel-plugin-transform-function-composition-name/badge.svg?branch=master)](https://coveralls.io/github/Intai/babel-plugin-transform-function-composition-name?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d605c426646a437389c3669953aaa2ec)](https://www.codacy.com/app/intai-hg/babel-plugin-transform-function-composition-name?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Intai/babel-plugin-transform-function-composition-name&amp;utm_campaign=Badge_Grade)
 
+## Want to achieve
+For example when debugging the following code:
+```javascript
+const getValue = R.prop(
+  'value'
+);
+
+const getValues = R.map(
+  getValue
+);
+
+const calc = R.pipe(
+  R.unapply(R.identity),
+  getValues,
+  R.sum
+);
+
+calc(
+  { value: 1 },
+  { value: 2 },
+  undefined
+);
+```
+The call stack from browser is not very useful:
+
+![Call Stack](doc/before.png)
+
+It would be easier to debug with variable names:
+
+![Call Stack Transformed](doc/after.png)
+
 ## Installation
 ```sh
 $ npm install babel-plugin-transform-function-composition-name
