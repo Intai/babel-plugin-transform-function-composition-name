@@ -29,13 +29,14 @@ calc(
   undefined
 );
 ```
+
 The call stack from browser is not very useful:
 
-![Call Stack](doc/before.png)
+<img src="doc/before.png" width="447">
 
 It would be easier to debug with variable names:
 
-![Call Stack Transformed](doc/after.png)
+<img src="doc/after.png" width="446">
 
 ## Installation
 ```sh
