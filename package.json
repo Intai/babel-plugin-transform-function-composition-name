@@ -15,7 +15,9 @@
     "babel-plugin",
     "function",
     "composition",
-    "named-function"
+    "named function",
+    "debugging",
+    "ramda"
   ],
   "author": "Intai",
   "license": "ISC",
