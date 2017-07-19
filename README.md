@@ -7,7 +7,7 @@ A [Babel](https://github.com/babel/babel/) transform plugin to name composition 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d605c426646a437389c3669953aaa2ec)](https://www.codacy.com/app/intai-hg/babel-plugin-transform-function-composition-name?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Intai/babel-plugin-transform-function-composition-name&amp;utm_campaign=Badge_Grade)
 
 ## Want to achieve
-For example when debugging the following code:
+For example when debugging the following code with [Ramda](http://ramdajs.com/):
 ```javascript
 const getValue = R.prop(
   'value'
